@@ -2,6 +2,8 @@ module github.com/bobacgo/gg
 
 go 1.24.0
 
+require github.com/google/uuid v1.6.0
+
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
