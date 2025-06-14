@@ -7,3 +7,5 @@ go command tool library
 - uuid
   - gg uuid 3
   - gg uuid 3 -F -
+- http
+- json
