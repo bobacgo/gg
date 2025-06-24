@@ -22,16 +22,22 @@ var (
 	httpDebug        bool
 )
 
+type HttpConfig struct {
+	Env     string            `yaml:"env"`
+	BaseURL map[string]string `json:"baseURL"` // dev, test, prod
+	Headers map[string]string `json:"headers"`
+}
+
 // httpCmd represents the http command
 var httpCmd = &cobra.Command{
 	Use:   "http",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-gg http http://localhost:8080/api/v1/cfg --debug -E=test
-gg http /api/v1/cfg -B http://localhost:8080
-gg http post http://localhost:8080/api/v1/user -R "{\"name\": \"bobacgo\"}"
-gg http post http://www.imooc.com/search/hotwords -H token=234 -H app=1
+	Short: "Send HTTP requests with flexible configuration",
+	Long: `Send HTTP requests with configurable base URLs, headers, and request bodies.
+Examples:
+  gg http http://localhost:8080/api/v1/cfg --debug -E=test
+  gg http /api/v1/cfg -B http://localhost:8080
+  gg http post http://localhost:8080/api/v1/user -R "{\"name\": \"bobacgo\"}"
+  gg http post http://www.imooc.com/search/hotwords -H token=234 -H app=1
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
@@ -158,10 +164,4 @@ func init() {
 	httpCmd.Flags().StringVarP(&httpRequestQuery, "request", "R", "", "request body")
 	httpCmd.Flags().BoolVarP(&httpDebug, "debug", "D", true, "debug mode")
 	httpClt = resty.New()
-}
-
-type HttpConfig struct {
-	Env     string            `yaml:"env"`
-	BaseURL map[string]string `json:"baseURL"` // dev, test, prod
-	Headers map[string]string `json:"headers"`
 }

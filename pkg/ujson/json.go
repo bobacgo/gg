@@ -2,18 +2,18 @@ package ujson
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
-func MarshalIndent(bytes []byte) string {
+func MarshalIndent(bytes []byte) []byte {
 	var result map[string]any
 	if err := json.Unmarshal(bytes, &result); err != nil {
-		return string(bytes)
+		println("[ujson] json.Unmarshal err", err.Error())
+		return bytes
 	}
 	respBody, err := json.MarshalIndent(result, "", "  ")
 	if err != nil {
-		fmt.Println("[ujson] json.MarshalIndent err", err)
-		return string(bytes)
+		println("[ujson] json.MarshalIndent err", err)
+		return bytes
 	}
-	return string(respBody)
+	return respBody
 }

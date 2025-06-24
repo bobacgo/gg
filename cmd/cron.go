@@ -5,9 +5,10 @@ package cmd
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/robfig/cron/v3"
 	"github.com/spf13/cobra"
-	"time"
 )
 
 var cronYear int8
@@ -15,9 +16,10 @@ var cronYear int8
 // cronCmd represents the cron command
 var cronCmd = &cobra.Command{
 	Use:   "cron",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "解析并展示 cron 表达式的未来执行时间",
+	Long: `该命令用于解析 cron 表达式，并输出未来的执行时间点。
+
+支持标准 cron 表达式格式，例如：
 
 	* * * * * <command>
 	- - - - -
@@ -37,7 +39,10 @@ and usage of using your command. For example:
 	| | +---------- 日 (1 - 31)
 	| +------------ 小时 (0 - 23)
 	+-------------- 分钟 (0 - 59)
-to quickly create a Cobra application.`,
+
+示例用法:
+	gg cron "0 0 * * *"
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			cmd.Help()
@@ -70,14 +75,4 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(cronCmd)
 	cronCmd.Flags().Int8VarP(&cronYear, "6", "6", 6, "supper year")
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// cronCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// cronCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
