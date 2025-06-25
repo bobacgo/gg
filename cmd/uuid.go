@@ -17,13 +17,15 @@ var uuidFmt string
 // uuidCmd represents the uuid command
 var uuidCmd = &cobra.Command{
 	Use:   "uuid",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "生成 UUID",
+	Long: `生成一个或多个 UUID，可自定义分隔符。
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+用法示例:
+  gg uuid           # 生成一个标准 UUID
+  gg uuid 5         # 生成 5 个 UUID
+  gg uuid -f ""     # 生成无分隔符的 UUID
+  gg uuid 3 -f ":"  # 生成 3 个以冒号分隔的 UUID
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		n := 1
 		if len(args) > 0 {
@@ -44,15 +46,5 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(uuidCmd)
-	uuidCmd.Flags().StringVarP(&uuidFmt, "fmt", "F", "", "指定uuid分隔符")
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// uuidCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// uuidCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	uuidCmd.Flags().StringVarP(&uuidFmt, "fmt", "f", "", "指定uuid分隔符")
 }

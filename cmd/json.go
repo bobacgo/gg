@@ -33,11 +33,15 @@ var jsonCmd = &cobra.Command{
    gg json -f '{"name":"Alice","age":30}'
 
 3. 将文件内容序列化为 JSON 字符串:
-   gg json -m data.txt
+   gg json -e data.txt
+
+4. 将 JSON 字符串反序列化为原始字符串:
+   gg json -d data.json
 
 参数说明:
   -f, --format   对 JSON 进行格式化（默认开启）
-  -m, --marshal  将文件内容序列化为 JSON 字符串
+  -e, --encode  将文件内容序列化为 JSON 字符串
+  -d, --decode  将 JSON 字符串反序列化为原始字符串
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		if jsonFlag.format != "" {
@@ -58,6 +62,7 @@ var jsonCmd = &cobra.Command{
 				println("[encode] ufile.Overwrite err: ", err)
 			}
 		}
+
 		if jsonFlag.unmarshal != "" {
 			if err := ufile.Overwrite(jsonFlag.unmarshal, func(b []byte) []byte {
 				res, err := strconv.Unquote(string(b))
@@ -70,6 +75,7 @@ var jsonCmd = &cobra.Command{
 				println("[decode] ufile.Overwrite err: ", err.Error())
 			}
 		}
+
 	},
 }
 

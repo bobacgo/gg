@@ -1,12 +1,1 @@
-{
-  "http": {
-    "Env": "test",
-    "baseURL": {
-      "test": "http://localhost:8080"
-    },
-    "headers": {
-      "app": "1",
-      "token": "234"
-    }
-  }
-}
+{"http":{"Env":"test","baseURL":{"test":"http://localhost:8080"},"headers":{"app":"1","token":"234"}},"pwd":{"git":"lac aaaa http://www.buc.com"}}

@@ -15,13 +15,17 @@ import (
 // timeCmd represents the time command
 var timeCmd = &cobra.Command{
 	Use:   "time",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "时间戳与日期转换工具",
+	Long: `time 命令用于在时间戳和日期字符串之间进行转换。
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+用法示例:
+
+  time                # 输出当前时间、秒级时间戳、毫秒级时间戳
+  time 2024-06-01     # 输出该日期的起止时间戳
+  time "2024-06-01 12:00:00" # 输出该时间的时间戳
+  time 1717219200     # 输出时间戳对应的时间
+
+支持秒、毫秒、微秒级时间戳与日期字符串的相互转换。`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			fmt.Println(time.Now())
@@ -39,7 +43,8 @@ to quickly create a Cobra application.`,
 					fmt.Println("Invalid date format:", err)
 					return
 				}
-				fmt.Println(tm.Unix())
+				fmt.Println(tm.Unix())                      // 输出当天的开始时间戳
+				fmt.Println(tm.AddDate(0, 0, 1).Unix() - 1) // 输出当天的结束时间戳
 			} else if len(t) == len(time.DateTime) {
 				tm, err := time.Parse(time.DateTime, t)
 				if err != nil {
@@ -60,14 +65,4 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(timeCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// timeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// timeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

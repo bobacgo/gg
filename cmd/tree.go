@@ -26,7 +26,7 @@ Hidden files and directories (those starting with a dot) are ignored by default.
 
 Examples:
   gg tree
-  gg tree /path/to/dir -L 2
+  gg tree /path/to/dir -l 2
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		dir := "./"
@@ -39,17 +39,7 @@ Examples:
 
 func init() {
 	rootCmd.AddCommand(treeCmd)
-	treeCmd.Flags().IntVarP(&treelevel, "level", "L", -1, "Max display depth of the directory tree")
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// treeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// treeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	treeCmd.Flags().IntVarP(&treelevel, "level", "l", -1, "Max display depth of the directory tree")
 }
 
 // Add currentDepth and maxDepth parameters

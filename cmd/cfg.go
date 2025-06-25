@@ -7,7 +7,8 @@ import (
 )
 
 var cfg = struct {
-	Http HttpConfig `json:"http"`
+	Http   HttpConfig        `json:"http"`
+	PwdMgr map[string]string `json:"pwd"`
 }{}
 
 var cfgPath = ".gg.json"
@@ -25,6 +26,9 @@ func initConfig() {
 	}
 	if err := json.Unmarshal(bytes, &cfg); err != nil {
 		fmt.Println("parse cfg err: ", err)
+	}
+	if len(cfg.PwdMgr) == 0 {
+		cfg.PwdMgr = make(map[string]string)
 	}
 }
 

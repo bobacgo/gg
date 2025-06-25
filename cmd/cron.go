@@ -42,6 +42,13 @@ var cronCmd = &cobra.Command{
 
 示例用法:
 	gg cron "0 0 * * *"
+	
+	近5次执行时间（未来）:
+	2025-06-26 00:00:00
+	2025-06-27 00:00:00
+	2025-06-28 00:00:00
+	2025-06-29 00:00:00
+	2025-06-30 00:00:00
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
@@ -65,7 +72,7 @@ var cronCmd = &cobra.Command{
 		now := time.Now()
 		next := expr.Next(now)
 		fmt.Println("近5次执行时间（未来）:")
-		for i := 0; i < 5; i++ {
+		for range 5 {
 			fmt.Println(next.Format(time.DateTime))
 			next = expr.Next(next)
 		}

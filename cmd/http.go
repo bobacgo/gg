@@ -13,14 +13,15 @@ import (
 	"resty.dev/v3"
 )
 
-var (
-	httpEnv          string
-	httpBaseURL      string
-	httpHeaders      []string
-	httpClt          *resty.Client
-	httpRequestQuery string
-	httpDebug        bool
-)
+var httpClt *resty.Client
+
+var httpFlag = struct {
+	Env          string
+	BaseURL      string
+	Headers      []string
+	RequestQuery string
+	Debug        bool
+}{}
 
 type HttpConfig struct {
 	Env     string            `yaml:"env"`
@@ -34,9 +35,9 @@ var httpCmd = &cobra.Command{
 	Short: "Send HTTP requests with flexible configuration",
 	Long: `Send HTTP requests with configurable base URLs, headers, and request bodies.
 Examples:
-  gg http http://localhost:8080/api/v1/cfg --debug -E=test
-  gg http /api/v1/cfg -B http://localhost:8080
-  gg http post http://localhost:8080/api/v1/user -R "{\"name\": \"bobacgo\"}"
+  gg http http://localhost:8080/api/v1/cfg --debug -e=test
+  gg http /api/v1/cfg -b dev=http://localhost:8080
+  gg http post http://localhost:8080/api/v1/user -r "{\"name\": \"bobacgo\"}"
   gg http post http://www.imooc.com/search/hotwords -H token=234 -H app=1
 `,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -46,22 +47,22 @@ Examples:
 		}
 
 		if cmd.Flags().Changed("debug") {
-			httpClt.SetDebug(httpDebug)
+			httpClt.SetDebug(httpFlag.Debug)
 		}
 
 		isChange := false
 
-		if httpEnv != "" {
+		if httpFlag.Env != "" {
 			isChange = true
-			cfg.Http.Env = httpEnv
+			cfg.Http.Env = httpFlag.Env
 		}
 
-		if httpBaseURL != "" {
+		if httpFlag.BaseURL != "" {
 			isChange = true
 
-			parts := strings.Split(httpBaseURL, "=")
+			parts := strings.Split(httpFlag.BaseURL, "=")
 			if cfg.Http.BaseURL == nil {
-				cfg.Http.BaseURL = make(map[string]string, len(httpBaseURL))
+				cfg.Http.BaseURL = make(map[string]string, len(httpFlag.BaseURL))
 			}
 
 			if len(parts) == 1 { // 没有等号，认为是默认值 "dev=http://localhost:8080"
@@ -77,7 +78,7 @@ Examples:
 				cfg.Http.BaseURL[parts[0]] = parts[1]
 			}
 		}
-		for _, h := range httpHeaders {
+		for _, h := range httpFlag.Headers {
 			if !strings.Contains(h, "=") {
 				fmt.Printf("Invalid header format: %s\n", h)
 				continue
@@ -124,21 +125,21 @@ Examples:
 				return
 			}
 
-			fmt.Println(ujson.MarshalIndent(resp.Bytes()))
+			fmt.Println(string(ujson.MarshalIndent(resp.Bytes())))
 		} else {
 			method := strings.ToUpper(args[0])
 			url := args[1]
 
 			r := httpClt.R()
-			if httpRequestQuery != "" {
-				_, err := os.Stat(httpRequestQuery)
+			if httpFlag.RequestQuery != "" {
+				_, err := os.Stat(httpFlag.RequestQuery)
 				if err != nil {
 					if !os.IsNotExist(err) {
 						fmt.Println("os.Stat err: ", err)
 					}
-					r = r.SetBody(httpRequestQuery)
+					r = r.SetBody(httpFlag.RequestQuery)
 				} else { // 指定的是有效文件路径
-					bytes, err := os.ReadFile(httpRequestQuery)
+					bytes, err := os.ReadFile(httpFlag.RequestQuery)
 					if err != nil {
 						fmt.Println("os.ReadFile err: ", err)
 						return
@@ -151,17 +152,17 @@ Examples:
 				fmt.Printf("Error making %s request to %s: %v\n", method, url, err)
 				return
 			}
-			fmt.Println(ujson.MarshalIndent(resp.Bytes()))
+			fmt.Println(string(ujson.MarshalIndent(resp.Bytes())))
 		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(httpCmd)
-	httpCmd.Flags().StringVarP(&httpEnv, "env", "E", "", "set base URL env")
-	httpCmd.Flags().StringVarP(&httpBaseURL, "baseURL", "B", "", "set base URL default dev dev=http://localhost:8080")
-	httpCmd.Flags().StringSliceVarP(&httpHeaders, "headers", "H", nil, "set HTTP header app=1")
-	httpCmd.Flags().StringVarP(&httpRequestQuery, "request", "R", "", "request body")
-	httpCmd.Flags().BoolVarP(&httpDebug, "debug", "D", true, "debug mode")
+	httpCmd.Flags().StringVarP(&httpFlag.Env, "env", "e", "", "set base URL env")
+	httpCmd.Flags().StringVarP(&httpFlag.BaseURL, "baseURL", "b", "", "set base URL default dev dev=http://localhost:8080")
+	httpCmd.Flags().StringSliceVarP(&httpFlag.Headers, "headers", "H", nil, "set HTTP header app=1")
+	httpCmd.Flags().StringVarP(&httpFlag.RequestQuery, "request", "r", "", "request body")
+	httpCmd.Flags().BoolVarP(&httpFlag.Debug, "debug", "d", true, "debug mode")
 	httpClt = resty.New()
 }
