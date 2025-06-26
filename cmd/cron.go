@@ -50,11 +50,8 @@ var cronCmd = &cobra.Command{
 	2025-06-29 00:00:00
 	2025-06-30 00:00:00
 `,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			cmd.Help()
-			return
-		}
 		arg := args[0]
 		// 解析 cron 表达式
 		// 输出近5次执行时间

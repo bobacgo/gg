@@ -26,6 +26,8 @@ var timeCmd = &cobra.Command{
   time 1717219200     # 输出时间戳对应的时间
 
 支持秒、毫秒、微秒级时间戳与日期字符串的相互转换。`,
+	Aliases: []string{"t"},
+	Args:    cobra.MaximumNArgs(1), // 允许最多一个参数
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			fmt.Println(time.Now())

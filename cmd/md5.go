@@ -24,14 +24,10 @@ Usage:
 
 If the argument is a valid file path, the MD5 of the file's contents will be calculated.
 Otherwise, the MD5 of the input string will be calculated.`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 1 {
-			cmd.Help()
-			return
-		}
 		arg := args[0]
-		_, err := os.Stat(arg)
-		if err != nil {
+		if _, err := os.Stat(arg); err != nil {
 			if !os.IsNotExist(err) {
 				fmt.Println("os.Stat err: ", err)
 				return

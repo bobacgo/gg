@@ -2,12 +2,16 @@
 
 go command tool library
 
+```sh
+  go install github.com/bobacgo/gg@latest
+```
+
 ### tree
 
 - gg tree
 - gg tree /path/to/dir -l 2
 
-### time
+### time t
 
 - gg time                # 输出当前时间、秒级时间戳、毫秒级时间戳
 - gg time 2024-06-01     # 输出该日期的起止时间戳
@@ -36,19 +40,20 @@ go command tool library
 ### cron
 
 - gg cron "0 0 * * *"
-
+```sh
   近5次执行时间（未来）:
   2025-06-26 00:00:00
   2025-06-27 00:00:00
   2025-06-28 00:00:00
   2025-06-29 00:00:00
   2025-06-30 00:00:00
+```
 
 ### md5
 
 - gg md5 <string|filepath>
 
-### token
+### token jwt
 
 - gg token `<your-jwt-token>`
 
@@ -57,3 +62,7 @@ go command tool library
 - gg pwd                # List all passwords
 - gg pwd key value      # Add or update a password with key and value
 - gg pwd -d key         # Delete the password with the specified key
+
+### base64 b64
+  - gg base64 encode "hello"
+  - gg base64 decode "aGVsbG8="

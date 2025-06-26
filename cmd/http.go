@@ -40,6 +40,7 @@ Examples:
   gg http post http://localhost:8080/api/v1/user -r "{\"name\": \"bobacgo\"}"
   gg http post http://www.imooc.com/search/hotwords -H token=234 -H app=1
 `,
+	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			cmd.Help()
