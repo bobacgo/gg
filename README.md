@@ -40,6 +40,7 @@ go command tool library
 ### cron
 
 - gg cron "0 0 * * *"
+
 ```sh
   近5次执行时间（未来）:
   2025-06-26 00:00:00
@@ -57,12 +58,13 @@ go command tool library
 
 - gg token `<your-jwt-token>`
 
-### pwd
+### pwd kv
 
 - gg pwd                # List all passwords
 - gg pwd key value      # Add or update a password with key and value
 - gg pwd -d key         # Delete the password with the specified key
 
 ### base64 b64
-  - gg base64 encode "hello"
-  - gg base64 decode "aGVsbG8="
+
+- gg base64 encode "hello"
+- gg base64 decode "aGVsbG8="

@@ -25,6 +25,7 @@ Examples:
   gg pwd key value      # Add or update a password with key and value
   gg pwd -d key         # Delete the password with the specified key
 `,
+	Aliases: []string{"kv"},
 	Run: func(cmd *cobra.Command, args []string) {
 		if pwdDeletFlag != "" {
 			delete(cfg.PwdMgr, pwdDeletFlag)
@@ -52,4 +53,7 @@ Examples:
 func init() {
 	rootCmd.AddCommand(pwdCmd)
 	pwdCmd.Flags().StringVarP(&pwdDeletFlag, "delete", "d", "", "delete a password by key")
+	if len(cfg.PwdMgr) == 0 {
+		cfg.PwdMgr = make(map[string]string)
+	}
 }
